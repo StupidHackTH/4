@@ -27,19 +27,13 @@
         text-shadow: -4px -4px 0 #000, -2px -2px 0 #000, 1px -1px 0 #000,
           1px 1px 0 #000, -1px 1px 0 #000;
       }
-      .hover-bg {
-        opacity: 0;
-      }
-      .hover-container:hover > .hover-bg {
-        opacity: 1;
-      }
       .block-transform {
         transform: var(--block-transform);
       }
     </style>
   </head>
   <body class="bg-black">
-    <div id="app" class="hover-container">
+    <div id="app">
       <div
         style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
         class="fixed inset-0 z-10 bg-cover bg-bottom"
@@ -53,7 +47,7 @@
       <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh">
         <div class="mb-6" style="--block-transform: rotate(-3deg);">
           <block>
-            <div class="p-6 text-6xl">
+            <div class="py-6 px-8 text-6xl">
               <strong
                 >stupid hackathon thailand the fourth / virtual 2020</strong
               >
@@ -65,15 +59,21 @@
           style="--block-transform: rotate(5deg); float:right; margin-top: -5rem"
         >
           <block>
-            <div class="p-6 text-4xl font-bold">
+            <div class="py-6 px-8 text-4xl font-bold">
               coming soon...?<br />
               stay tuned...!
             </div>
           </block>
         </div>
 
-        <div class="mt-64">
-          ...
+        <div class="mt-64 mb-16 relative">
+          <div class="block-transform absolute z-30 inset-0" style="background: #000a"></div>
+          <div class="block-transform absolute z-30 inset-0" style="background: hotpink; opacity: 0.64; mix-blend-mode: screen;"></div>
+          <div class="block-transform relative z-40 text-white">
+            <div class="p-8">
+              Cupcake ipsum dolor sit amet bear claw lollipop. Ice cream cake gingerbread. Pastry chocolate bar liquorice I love cookie. Pastry carrot cake macaroon oat cake cheesecake. Wafer bonbon bonbon donut cupcake. Dessert oat cake brownie sugar plum tart cotton candy. Chupa chups wafer donut I love apple pie danish bear claw chocolate bar. Ice cream sesame snaps tootsie roll halvah donut I love. Tootsie roll sweet brownie I love cake lemon drops halvah fruitcake. Liquorice sugar plum carrot cake soufflé I love candy topping. Chocolate cake marshmallow icing powder marshmallow bonbon jelly icing bear claw. Jujubes bear claw pudding candy brownie chocolate pie.
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@
       const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`;
       let counter = 0;
       Vue.component("block", {
-        template: `<section class="relative hover-container" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
+        template: `<section class="relative" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
           <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
@@ -120,4 +120,3 @@
     </script>
   </body>
 </html>
-w
