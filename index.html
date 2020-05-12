@@ -10,7 +10,10 @@
       href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
         font-family: inter, sans-serif;
@@ -21,7 +24,8 @@
       }
       .our-shadow {
         color: white;
-        text-shadow: -4px -4px 0 #000, -2px -2px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000, -1px 1px 0 #000;
+        text-shadow: -4px -4px 0 #000, -2px -2px 0 #000, 1px -1px 0 #000,
+          1px 1px 0 #000, -1px 1px 0 #000;
       }
       .hover-bg {
         opacity: 0;
@@ -40,22 +44,36 @@
         style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
         class="fixed inset-0 z-10 bg-cover bg-bottom"
       ></div>
-      <div class="fixed inset-0 z-20 difference" :style="style1" @touchstart="changeColor" @mouseenter="changeColor"></div>
+      <div
+        class="fixed inset-0 z-20 difference"
+        :style="style1"
+        @touchstart="changeColor"
+        @mouseenter="changeColor"
+      ></div>
       <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh">
         <div class="mb-6" style="--block-transform: rotate(-3deg);">
           <block>
             <div class="p-6 text-6xl">
-              <strong>stupid hackathon thailand the fourth / virtual 2020</strong>
+              <strong
+                >stupid hackathon thailand the fourth / virtual 2020</strong
+              >
             </div>
           </block>
         </div>
-        <div class="mb-6 text-right" style="--block-transform: rotate(5deg); float:right; margin-top: -5rem">
+        <div
+          class="mb-6 text-right"
+          style="--block-transform: rotate(5deg); float:right; margin-top: -5rem"
+        >
           <block>
             <div class="p-6 text-4xl font-bold">
-              coming soon...?<br>
+              coming soon...?<br />
               stay tuned...!
             </div>
           </block>
+        </div>
+
+        <div class="mt-64">
+          ...
         </div>
       </div>
     </div>
@@ -63,20 +81,27 @@
     <script>
       const rand = () => Math.random() * 2 - 1;
       const mkdeg = () => ~~(Math.random() * 360);
-      const mkc = () => `hsl(${mkdeg()}deg, 100%, 50%)`
-      const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`
+      const mkc = () => `hsl(${mkdeg()}deg, 100%, 50%)`;
+      const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`;
       let counter = 0;
       Vue.component("block", {
         template: `<section class="relative hover-container" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
           <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
-        data: () => ({
-          style1: { background: mkg(), border: `8px solid black`, borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}` },
-        }),
+        data() {
+          return { style1: this.generateStyle() };
+        },
         methods: {
           changeColor(e) {
-            this.style1 = { background: mkg(), border: `8px solid black`, borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}` }
+            this.style1 = this.generateStyle();
+          },
+          generateStyle() {
+            return {
+              background: mkg(),
+              border: `8px solid black`,
+              borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}`
+            };
           }
         }
       });
@@ -84,14 +109,15 @@
         el: "#app",
         data: {
           style1: { background: mkg() },
-          style2: { background: mkg() },
+          style2: { background: mkg() }
         },
         methods: {
           changeColor() {
-            this.style1 = { background: mkg() }
+            this.style1 = { background: mkg() };
           }
         }
       });
     </script>
   </body>
 </html>
+w
