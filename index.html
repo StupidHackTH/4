@@ -35,12 +35,12 @@
     </style>
   </head>
   <body class="bg-black">
-    <div id="app" class="hover-container" @touchstart="changeColor" @mouseenter="changeColor">
+    <div id="app" class="hover-container">
       <div
         style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
         class="fixed inset-0 z-10 bg-cover bg-bottom"
       ></div>
-      <div class="fixed inset-0 z-20 difference" :style="style1"></div>
+      <div class="fixed inset-0 z-20 difference" :style="style1" @touchstart="changeColor" @mouseenter="changeColor"></div>
       <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh">
         <div class="mb-6" style="--block-transform: rotate(-3deg);">
           <block>
@@ -63,7 +63,8 @@
     <script>
       const rand = () => Math.random() * 2 - 1;
       const mkdeg = () => ~~(Math.random() * 360);
-      const mkg = () => `linear-gradient(${mkdeg()}deg, hsl(${mkdeg()}deg, 100%, 50%), hsl(${mkdeg()}deg, 100%, 50%))`
+      const mkc = () => `hsl(${mkdeg()}deg, 100%, 50%)`
+      const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`
       let counter = 0;
       Vue.component("block", {
         template: `<section class="relative hover-container" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
@@ -71,12 +72,11 @@
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
         data: () => ({
-          style1: { background: mkg(), border: `4px solid hsl(${mkdeg()}deg, 100%, 50%)` },
+          style1: { background: mkg(), border: `8px solid black`, borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}` },
         }),
         methods: {
           changeColor(e) {
-            e && e.stopPropagation()
-            this.style1 = { background: mkg(), border: `4px solid hsl(${mkdeg()}deg, 100%, 50%)` }
+            this.style1 = { background: mkg(), border: `8px solid black`, borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}` }
           }
         }
       });
