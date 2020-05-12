@@ -24,27 +24,23 @@
         text-shadow: -3px -3px 0 #000;
       }
       .hover-bg {
-        transition: 0.4s opacity;
         opacity: 0;
-        will-change: opacity, transform;
       }
       .hover-container:hover > .hover-bg {
         opacity: 1;
       }
       .block-transform {
-        will-change: opacity, transform;
         transform: var(--block-transform);
       }
     </style>
   </head>
   <body class="bg-black">
-    <div id="app" class="hover-container">
+    <div id="app" class="hover-container" @touchstart="changeColor" @mouseenter="changeColor">
       <div
         style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
         class="fixed inset-0 z-10 bg-cover bg-bottom"
       ></div>
       <div class="fixed inset-0 z-20 difference" :style="style1"></div>
-      <div class="fixed inset-0 z-20 difference hover-bg" :style="style2"></div>
       <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh">
         <div class="mb-6" style="--block-transform: rotate(-3deg);">
           <block>
@@ -53,10 +49,11 @@
             </div>
           </block>
         </div>
-        <div class="mb-6" style="--block-transform: rotate(5deg);">
+        <div class="mb-6" style="--block-transform: rotate(5deg); float:right; margin-top: -5rem">
           <block>
-            <div class="p-6 text-2xl">
-              coming soon...
+            <div class="p-6 text-4xl">
+              coming soon...?<br>
+              stay tuned
             </div>
           </block>
         </div>
@@ -69,21 +66,30 @@
       const mkg = () => `linear-gradient(${mkdeg()}deg, hsl(${mkdeg()}deg, 100%, 50%), hsl(${mkdeg()}deg, 100%, 50%))`
       let counter = 0;
       Vue.component("block", {
-        template: `<section class="relative hover-container">
+        template: `<section class="relative hover-container" @touchstart="changeColor" @mouseenter="changeColor">
           <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
-          <div class="block-transform absolute z-30 inset-0 difference hover-bg" :style="style2"></div>
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
         data: () => ({
           style1: { background: mkg() },
           style2: { background: mkg() },
-        })
+        }),
+        methods: {
+          changeColor() {
+            this.style1 = { background: mkg() }
+          }
+        }
       });
       new Vue({
         el: "#app",
         data: {
           style1: { background: mkg() },
           style2: { background: mkg() },
+        },
+        methods: {
+          changeColor() {
+            this.style1 = { background: mkg() }
+          }
         }
       });
     </script>
