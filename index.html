@@ -5,28 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hello!</title>
+    <title>sht4</title>
     <link
       href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
+      body {
+        font-family: inter, sans-serif;
+      }
       .difference {
         mix-blend-mode: difference;
+      }
+      .our-shadow {
+        color: white;
+        text-shadow: -3px -3px 0 #000;
+      }
+      .hover-bg {
+        transition: 0.4s opacity;
+        opacity: 0;
+        will-change: opacity;
+      }
+      .hover-container:hover > .hover-bg {
+        opacity: 1;
       }
     </style>
   </head>
   <body class="bg-black">
-    <div id="app">
+    <div id="app" class="hover-container">
       <div
         style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
         class="fixed inset-0 z-10 bg-cover bg-bottom"
       ></div>
-      <div class="fixed inset-0 z-20 difference" :style="{ background }"></div>
-      <div class="relative z-30 mx-auto max-w-xl">
-        <block>
-          yah
-        </block>
+      <div class="fixed inset-0 z-20 difference" :style="style1"></div>
+      <div class="fixed inset-0 z-20 difference hover-bg" :style="style2"></div>
+      <div class="relative mx-auto max-w-2xl p-8" style="padding-top: 16vh">
+        <div class="mb-6">
+          <block>
+            <div class="p-6 text-4xl">
+              <strong>stupid hackathon thailand</strong><br>the fourth / virtual
+            </div>
+          </block>
+        </div>
+        <div class="mb-6">
+          <block>
+            <div class="p-6 text-2xl">
+              coming soon...
+            </div>
+          </block>
+        </div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -36,17 +64,21 @@
       const mkg = () => `linear-gradient(${mkdeg()}deg, hsl(${mkdeg()}deg, 100%, 50%), hsl(${mkdeg()}deg, 100%, 50%))`
       let counter = 0;
       Vue.component("block", {
-        template: `<div class="difference relative" :style="style"><slot></slot></div>`,
+        template: `<section class="relative hover-container">
+          <div class="absolute z-30 inset-0 difference" :style="style1"></div>
+          <div class="absolute z-30 inset-0 difference hover-bg" :style="style2"></div>
+          <div class="relative z-40 our-shadow"><slot></slot></div>
+        </section>`,
         data: () => ({
-          style: {
-            background: mkg()
-          }
+          style1: { background: mkg() },
+          style2: { background: mkg() },
         })
       });
       new Vue({
         el: "#app",
         data: {
-          background: mkg()
+          style1: { background: mkg() },
+          style2: { background: mkg() },
         }
       });
     </script>
