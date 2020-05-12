@@ -21,7 +21,7 @@
       }
       .our-shadow {
         color: white;
-        text-shadow: -3px -3px 0 #000;
+        text-shadow: -4px -4px 0 #000, -2px -2px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000, -1px 1px 0 #000;
       }
       .hover-bg {
         opacity: 0;
@@ -49,11 +49,11 @@
             </div>
           </block>
         </div>
-        <div class="mb-6" style="--block-transform: rotate(5deg); float:right; margin-top: -5rem">
+        <div class="mb-6 text-right" style="--block-transform: rotate(5deg); float:right; margin-top: -5rem">
           <block>
             <div class="p-6 text-4xl">
               coming soon...?<br>
-              stay tuned
+              stay tuned...!
             </div>
           </block>
         </div>
@@ -66,17 +66,17 @@
       const mkg = () => `linear-gradient(${mkdeg()}deg, hsl(${mkdeg()}deg, 100%, 50%), hsl(${mkdeg()}deg, 100%, 50%))`
       let counter = 0;
       Vue.component("block", {
-        template: `<section class="relative hover-container" @touchstart="changeColor" @mouseenter="changeColor">
+        template: `<section class="relative hover-container" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
           <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
         data: () => ({
-          style1: { background: mkg() },
-          style2: { background: mkg() },
+          style1: { background: mkg(), border: `4px solid hsl(${mkdeg()}deg, 100%, 50%)` },
         }),
         methods: {
-          changeColor() {
-            this.style1 = { background: mkg() }
+          changeColor(e) {
+            e && e.stopPropagation()
+            this.style1 = { background: mkg(), border: `4px solid hsl(${mkdeg()}deg, 100%, 50%)` }
           }
         }
       });
