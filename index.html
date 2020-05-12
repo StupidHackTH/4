@@ -14,6 +14,7 @@
     <style>
       body {
         font-family: inter, sans-serif;
+        --block-transform: translate(0, 0);
       }
       .difference {
         mix-blend-mode: difference;
@@ -25,10 +26,14 @@
       .hover-bg {
         transition: 0.4s opacity;
         opacity: 0;
-        will-change: opacity;
+        will-change: opacity, transform;
       }
       .hover-container:hover > .hover-bg {
         opacity: 1;
+      }
+      .block-transform {
+        will-change: opacity, transform;
+        transform: var(--block-transform);
       }
     </style>
   </head>
@@ -40,15 +45,15 @@
       ></div>
       <div class="fixed inset-0 z-20 difference" :style="style1"></div>
       <div class="fixed inset-0 z-20 difference hover-bg" :style="style2"></div>
-      <div class="relative mx-auto max-w-2xl p-8" style="padding-top: 16vh">
+      <div class="relative mx-auto max-w-3xl p-8" style="padding-top: 16vh">
         <div class="mb-6">
           <block>
-            <div class="p-6 text-4xl">
+            <div class="p-6 text-5xl">
               <strong>stupid hackathon thailand</strong><br>the fourth / virtual
             </div>
           </block>
         </div>
-        <div class="mb-6">
+        <div class="mb-6" style="--block-transform: rotate(5deg);">
           <block>
             <div class="p-6 text-2xl">
               coming soon...
@@ -65,9 +70,9 @@
       let counter = 0;
       Vue.component("block", {
         template: `<section class="relative hover-container">
-          <div class="absolute z-30 inset-0 difference" :style="style1"></div>
-          <div class="absolute z-30 inset-0 difference hover-bg" :style="style2"></div>
-          <div class="relative z-40 our-shadow"><slot></slot></div>
+          <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
+          <div class="block-transform absolute z-30 inset-0 difference hover-bg" :style="style2"></div>
+          <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
         data: () => ({
           style1: { background: mkg() },
