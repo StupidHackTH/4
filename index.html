@@ -1,28 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Hello!</title>
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
-    
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
-  </head>  
-  <body>
-    <h1>Hi there!</h1>
-    
-    <p>
-      I'm your cool new webpage. Made with <a href="https://glitch.com">Glitch</a>!
-    </p>
-
-    <!-- include the Glitch button to show what the webpage is about and
-          to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js" defer></script>
+    <link
+      href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .difference {
+        mix-blend-mode: difference;
+      }
+    </style>
+  </head>
+  <body class="bg-black">
+    <div id="app">
+      <div
+        style="background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481')"
+        class="fixed inset-0 z-10 bg-cover bg-bottom"
+      ></div>
+      <div class="fixed inset-0 z-20 difference" :style="{ background }"></div>
+      <div class="relative z-30 mx-auto max-w-xl">
+        <block>
+          yah
+        </block>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const rand = () => Math.random() * 2 - 1;
+      const mkdeg = () => ~~(Math.random() * 360);
+      const mkg = () => `linear-gradient(${mkdeg()}deg, hsl(${mkdeg()}deg, 100%, 50%), hsl(${mkdeg()}deg, 100%, 50%))`
+      let counter = 0;
+      Vue.component("block", {
+        template: `<div class="difference relative" :style="style"><slot></slot></div>`,
+        data: () => ({
+          style: {
+            background: mkg()
+          }
+        })
+      });
+      new Vue({
+        el: "#app",
+        data: {
+          background: mkg()
+        }
+      });
+    </script>
   </body>
 </html>
