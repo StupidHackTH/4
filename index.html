@@ -57,14 +57,11 @@
           style="--block-transform: rotate(5deg); float:right; margin-top: -5rem"
         >
           <block glow>
-            <div class="py-6 px-8 text-4xl font-bold">
-              coming soon...?<br />
-              stay tuned...!
-            </div>
+            <div class="py-6 px-8 text-4xl font-bold" v-html="text.tag"></div>
           </block>
         </div>
 
-        <div class="mt-64 mb-16 relative">
+        <div class="mt-64 mb-16 relative" v-if="text.section1">
           <div
             class="block-transform absolute z-30 inset-0"
             style="background: hotpink; mix-blend-mode: color;"
@@ -77,24 +74,12 @@
             <div
               class="p-8 text-white text-xl"
               style="font-family: Itim, sans-serif; text-shadow: -1px -1px 0 #0009"
+                 v-html="text.section1"
             >
-              <p>
-                Cupcake ipsum dolor sit amet bear claw lollipop. Ice cream cake
-                gingerbread. Pastry chocolate bar liquorice I love cookie.
-                Pastry carrot cake macaroon oat cake cheesecake. Wafer bonbon
-                bonbon donut cupcake. Dessert oat cake brownie sugar plum tart
-                cotton candy. Chupa chups wafer donut I love apple pie danish
-                bear claw chocolate bar. Ice cream sesame snaps tootsie roll
-                halvah donut I love. Tootsie roll sweet brownie I love cake
-                lemon drops halvah fruitcake. Liquorice sugar plum carrot cake
-                soufflé I love candy topping. Chocolate cake marshmallow icing
-                powder marshmallow bonbon jelly icing bear claw. Jujubes bear
-                claw pudding candy brownie chocolate pie.
-              </p>
             </div>
           </div>
         </div>
-        <div class="mt-16 mb-16 relative">
+        <div class="mt-16 mb-16 relative" v-if="text.section2">
           <div
             class="block-transform absolute z-30 inset-0"
             style="background: dodgerblue; mix-blend-mode: color;"
@@ -144,7 +129,9 @@
           <div v-if="glow != null" class="absolute z-40 inset-0 difference select-none pointer-events-none" style="background: black" :style="style2"><slot></slot></div>
         </section>`,
         data() {
-          return this.generateStyles();
+          return {
+            ...this.generateStyles()
+          };
         },
         methods: {
           changeColor(e) {
@@ -170,7 +157,20 @@
         el: "#app",
         data: {
           style1: { background: mkg() },
-          style2: { background: mkg() }
+          style2: { background: mkg() },
+          text: {
+            tag: 'loading…',
+            section1: '',
+            section2: '',
+          }
+        },
+        async mounted() {
+          const { values } = await fetch("https://sheets.googleapis.com/v4/spreadsheets/1u-wWaLE2qCKFshGltdNgeiles9FoQ0BbRi13TPmYZvU/values/'HTML'!A:Z?key=AIzaSyDcZnqLfrZXkEKExGXw7CRSOJ-WKoAhSFc").then(r => r.json())
+          const text = { ...this.text }
+          for ([k, v] of values) {
+            text[k] = v
+          }
+          this.text = text
         },
         methods: {
           changeColor() {
