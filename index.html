@@ -46,11 +46,9 @@
       ></div>
       <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh">
         <div class="mb-6" style="--block-transform: rotate(-3deg);">
-          <block>
-            <div class="py-6 px-8 text-6xl">
-              <strong
-                >stupid hackathon thailand the fourth / virtual 2020</strong
-              >
+          <block glow>
+            <div class="py-6 px-8 text-6xl font-bold">
+              stupid hackathon thailand the fourth / virtual 2020
             </div>
           </block>
         </div>
@@ -99,12 +97,17 @@
       const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`;
       let counter = 0;
       Vue.component("block", {
+        props: ['glow'],
         template: `<section class="relative" @touchstart="changeColor($event)" @mouseenter="changeColor($event)">
           <div class="block-transform absolute z-30 inset-0 difference" :style="style1"></div>
+          <div class="block-transform absolute z-30 inset-0 difference select-none pointer-events-none" style="background: black" :style="style2"><slot></slot></div>
           <div class="block-transform relative z-40 our-shadow"><slot></slot></div>
         </section>`,
         data() {
-          return { style1: this.generateStyle() };
+          return {
+            style1: this.generateStyle(),
+            style2: { textShadow: `0 0 4em ${mkc()}` }
+          };
         },
         methods: {
           changeColor(e) {
