@@ -92,23 +92,8 @@
             <div
               class="p-8 text-white text-xl"
               style="font-family: Itim, sans-serif; text-shadow: -1px -1px 0 #0009"
+                 v-html="text.section2"
             >
-              <p>
-                แอบมองเธอจะก้าวเดินออกมาเถอะมาระเบิดความมุ้งมิ้งมุ้งมิ้งเป็นเช่นไรก็ต้องเสี่ยง
-                ขอแค่พูดออกไปด้วยกันหน่อย
-                มันจะไม่ว่าชอบฉันจะไม่เคยจะไม่เคยจะรอพวกเธอ
-                คงจะยังนึกเรื่องนี้ขึ้นมา
-                จงบอกตัวเองว่าพยายามไม่เคยทำร้ายสักคนที่ตั้งใจ
-                แค่เพียงเชื่อมั่นและศรัทธาอาบแก้มเหมือนไม่ช้าก็เด็กผู้หญิงอย่างเป็นเช่นไรก็หัวใจ
-                ถ้ายังไม่แน่ใจก็ลองลองแตะนิ้วกันไหมล่ะไปข้างหน้า
-                ขอให้เธอได้โปรดช่วยหรอก
-                มารับฤดูใหม่ให้เธอไม่รู้วิธีพับโดยเปลี่ยนผันคืนวันพรุ่งนี้
-                ขอให้วันนี้เรามาเชียร์เรามาเถิดเราไม่ว่าฉันไว้ด้วยกัน
-                ถ้ายังไม่ยอมเสียใจสักวันเธอได้พบ
-                ให้เธอจะไม่ยอมเสียใจสักทีหรือไปเล่นตะกร้อเกินห้ามมันไว้
-                เธอสำคัญกว่าใครที่ดีเนื่องในใจ
-                ไม่ต้องลังเลแค่เพียงได้พบเธอได้รับรู้ไหมตอนเธอหน้าแดง
-              </p>
             </div>
           </div>
         </div>
@@ -165,7 +150,8 @@
           }
         },
         async mounted() {
-          const { values } = await fetch("https://sheets.googleapis.com/v4/spreadsheets/1u-wWaLE2qCKFshGltdNgeiles9FoQ0BbRi13TPmYZvU/values/'HTML'!A:Z?key=AIzaSyDcZnqLfrZXkEKExGXw7CRSOJ-WKoAhSFc").then(r => r.json())
+          const url = `https://sheets.googleapis.com/v4/spreadsheets/1u-wWaLE2qCKFshGltdNgeiles9FoQ0BbRi13TPmYZvU/values/'HTML${location.search.match(/draft/) ? '-draft' : ''}'!A:Z?key=AIzaSyDcZnqLfrZXkEKExGXw7CRSOJ-WKoAhSFc`
+          const { values } = await fetch(url).then(r => r.json())
           const text = { ...this.text }
           for ([k, v] of values) {
             text[k] = v
