@@ -40,8 +40,16 @@
         background: #fff6;
       }
       .info-dialog[open] {
+        will-change: transform, opacity, filter;
         animation: 0.5s open-dialog linear;
         --open-pivot: 0px, 0px;
+      }
+      .info-dialog[data-closing='1'] {
+        animation: 0.3s closing-dialog linear;
+        animation-fill-mode: both;
+        filter: invert(1);
+        mix-blend-mode: difference;
+        user-select: none;
       }
       @keyframes open-dialog {
         from {
@@ -49,6 +57,16 @@
         }
         to {
           transform: translate(0, 0) scale(1) rotate(0deg);
+        }
+      }
+      @keyframes closing-dialog {
+        from {
+          transform: scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: scale(4);
+          opacity: 0;
         }
       }
     </style>
@@ -285,6 +303,7 @@
               ref="dialog"
               style="background: transparent; border: none; padding: 0;"
               :style="{ '--open-pivot': openPivot }"
+              :data-closing="closing ? 1 : 0"
               class="text-white info-dialog"
             >
               <div style="width: 24rem; max-width: 90vw;" class="relative">
@@ -293,7 +312,7 @@
                   <div class="mt-4">
                     <button
                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      @click="$refs.dialog.close()"
+                      @click="close()"
                     >
                       Close
                     </button>
@@ -305,6 +324,7 @@
           data() {
             return {
               openPivot: '0px, 0px',
+              closing: false,
             }
           },
           methods: {
@@ -317,6 +337,13 @@
               this.$nextTick(() => {
                 this.$refs.dialog.showModal()
               })
+            },
+            close() {
+              this.closing = true
+              setTimeout(() => {
+                this.closing = false
+                this.$refs.dialog.close()
+              }, 400)
             },
           },
           mounted() {
@@ -333,6 +360,7 @@
             class="relative flex-none mx-4"
             style="width: 24rem; max-width: 80vw;"
             @mouseenter="changeColor"
+            @touchstart="changeColor"
           >
             <div class="absolute inset-0 z-20 difference" :style="style1"></div>
             <div class="relative flex flex-col h-full z-30">
