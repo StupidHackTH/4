@@ -118,10 +118,21 @@
             <h-item>
               <template v-slot:title><h2>Sign up</h2></template>
               <template v-slot:date>เร็วๆ นี้</template>
-              <p>
+              <p class="mb-3">
                 ลงทะเบียนเพื่อเข้าร่วมงาน โดยเมื่อลงทะเบียนแล้ว เราจะส่ง Invite
                 ให้เข้าร่วมเซิฟเวอร์ Discord ของงาน
               </p>
+
+              <info-button>
+                🤔 ต้องรวมทีมมาก่อนไหม?
+                <template v-slot:content>
+                  <p class="mb-3">
+                    <span class="text-yellow-300">ต้องรวมทีมมาก่อนไหม?:</span>
+                    ไม่จำเป็นต้องรวมทีมมาก่อน โดยภายในงานจะมีช่วงสำหรับตั้งทีม
+                    แต่ถ้ามีทีมมาอยู่แล้ว ก็มาเป็นทีมได้เลย~
+                  </p>
+                </template>
+              </info-button>
             </h-item>
 
             <h-item>
@@ -149,10 +160,10 @@
               </p>
 
               <info-button>
-                การส่งผลงาน
+                🤔 การส่งผลงาน
                 <template v-slot:content>
                   <p class="mb-3">
-                    <strong>การส่งผลงาน:</strong>
+                    <span class="text-yellow-300">การส่งผลงาน:</span>
                     เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงาน
                     โดยให้ส่งผลงานภายในวันเสาร์ที่ 20 เวลา 19:00 น.
                     ประกอบไปด้วย:
@@ -200,7 +211,7 @@
           </div>
         </div>
       </div>
-      <portal-target name="modal"></portal-target>
+      <portal-target multiple name="modal"></portal-target>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"
@@ -283,7 +294,7 @@
         Vue.component('info-button', {
           template: html`<div>
             <button
-              class="bg-black text-white font-bold py-2 px-4 rounded"
+              class="bg-black text-white py-2 px-4 rounded"
               ref="button"
               @click="$refs.dialog.open($event)"
             >
@@ -301,20 +312,20 @@
           template: html`<div>
             <dialog
               ref="dialog"
-              style="background: transparent; border: none; padding: 0;"
+              style="background: transparent; border: none; padding: 0; font-family: Itim, Inter, sans-serif;"
               :style="{ '--open-pivot': openPivot }"
               :data-closing="closing ? 1 : 0"
-              class="text-white info-dialog"
+              class="text-white info-dialog text-2xl"
             >
               <div style="width: 24rem; max-width: 90vw;" class="relative">
                 <div class="bg-black p-4 border-2 border-white">
                   <slot></slot>
                   <div class="mt-4">
                     <button
-                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      class="text-4xl"
                       @click="close()"
                     >
-                      Close
+                      🆗
                     </button>
                   </div>
                 </div>
