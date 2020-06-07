@@ -4,7 +4,6 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>sht4</title>
     <link
       href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
@@ -14,6 +13,13 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Itim&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/dialog-polyfill@0.5.1/dialog-polyfill.css"
+      integrity="sha256-hT0ET4tfm+7MyjeBepBgV2N5tOmsAVKcTWhH82jvoaA="
+      crossorigin="anonymous"
+    />
+
     <style>
       body {
         font-family: inter, sans-serif;
@@ -29,6 +35,21 @@
       }
       .block-transform {
         transform: var(--block-transform);
+      }
+      [data-js-focus-visible] .scroller[data-focus-visible-added] .mousetrap {
+        background: #fff6;
+      }
+      .info-dialog[open] {
+        animation: 0.5s open-dialog linear;
+        --open-pivot: 0px, 0px;
+      }
+      @keyframes open-dialog {
+        from {
+          transform: translate(var(--open-pivot)) scale(0.0001) rotate(1080deg);
+        }
+        to {
+          transform: translate(0, 0) scale(1) rotate(0deg);
+        }
       }
     </style>
   </head>
@@ -64,79 +85,124 @@
         </div>
       </div>
 
-      <div class="overflow-y-hidden overflow-x-scroll clear-both mt-16 mb-16">
-        <div class="flex relative">
-          <div class="inset-0 absolute z-20"></div>
-          <div
-            class="flex-none"
-            style="padding-left: calc(50vw - 24rem);"
-          ></div>
+      <div
+        class="overflow-y-hidden overflow-x-scroll clear-both mt-16 mb-16 scroller"
+        tabindex="0"
+      >
+        <div class="relative inline-block">
+          <div class="inset-0 absolute z-20 mousetrap"></div>
+          <div class="flex relative">
+            <div
+              class="flex-none"
+              style="padding-left: calc(50vw - 24rem);"
+            ></div>
 
-          <h-item>
-            <template v-slot:title><h2>Sign up</h2></template>
-            <template v-slot:date>เร็วๆ นี้</template>
-            <p>
-              ลงทะเบียนเพื่อเข้าร่วมงาน โดยเมื่อลงทะเบียนแล้ว เราจะส่ง Invite
-              ให้เข้าร่วมเซิฟเวอร์ Discord ของงาน
-            </p>
-          </h-item>
+            <h-item>
+              <template v-slot:title><h2>Sign up</h2></template>
+              <template v-slot:date>เร็วๆ นี้</template>
+              <p>
+                ลงทะเบียนเพื่อเข้าร่วมงาน โดยเมื่อลงทะเบียนแล้ว เราจะส่ง Invite
+                ให้เข้าร่วมเซิฟเวอร์ Discord ของงาน
+              </p>
+            </h-item>
 
-          <h-item>
-            <template v-slot:title><h2>Opening</h2></template>
-            <template v-slot:date>Wed, Jun 17 @ 20:00</template>
-            <p class="mb-3">
-              มาเปิดงานด้วยกันบน Discord และพบปะกับคนอื่นๆ ในงาน และเริ่มตั้งทีม
-            </p>
-            <p class="mb-3">
-              เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงานให้แต่ละทีม
-            </p>
-          </h-item>
+            <h-item>
+              <template v-slot:title><h2>Opening</h2></template>
+              <template v-slot:date>Wed, Jun 17 @ 20:00</template>
+              <p class="mb-3">
+                มาเปิดงานด้วยกันบน Discord และพบปะกับคนอื่นๆ ในงาน
+                และเริ่มตั้งทีม
+              </p>
+              <p class="mb-3">
+                เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงานให้แต่ละทีม
+              </p>
+            </h-item>
 
-          <h-item>
-            <template v-slot:title><h2>Hack</h2></template>
-            <template v-slot:date>Wed, Jun 17 @ 21:00</template>
-            <p class="mb-3">
-              Hack กันตามอัธยาศัย โดยทุกท่านสามารถใช้ Virtual space ต่างๆ
-              ภายในงานได้เต็มที่
-            </p>
-            <p>
-              สามารถส่งผลงานได้จนถึงวันเสาร์ที่ 20 เวลา 19:00 น.
-              ประกอบไปด้วยวีดีโอความยาวไม่เกิน 3 นาที และลิงค์เดโม่
-            </p>
-          </h-item>
+            <h-item>
+              <template v-slot:title><h2>Hack</h2></template>
+              <template v-slot:date>Wed, Jun 17 @ 21:00</template>
+              <p class="mb-3">
+                Hack กันตามอัธยาศัย โดยทุกท่านสามารถใช้ Virtual space ต่างๆ
+                ภายในงานได้เต็มที่
+              </p>
+              <p class="mb-3">
+                สามารถส่งผลงานได้จนถึงวันเสาร์ที่ 20 เวลา 19:00 น.
+                ประกอบไปด้วยวีดีโอความยาวไม่เกิน 3 นาที
+              </p>
 
-          <h-item>
-            <template v-slot:title><h2>Present</h2></template>
-            <template v-slot:date>Sat, Jun 20 @ 20:00</template>
-            <p>
-              มารับชมผลงานของทุกคนไปพร้อมๆ กัน โดยเราจะ Live ขึ้น YouTube
-            </p>
-          </h-item>
+              <info-button>
+                การส่งผลงาน
+                <template v-slot:content>
+                  <p class="mb-3">
+                    <strong>การส่งผลงาน:</strong>
+                    เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงาน
+                    โดยให้ส่งผลงานภายในวันเสาร์ที่ 20 เวลา 19:00 น.
+                    ประกอบไปด้วย:
+                  </p>
+                  <ul class="list-disc pl-6">
+                    <li>ชื่อผลงาน</li>
+                    <li>URL ลิงค์เดโม่</li>
+                    <li>
+                      วีดีโอความยาวไม่เกิน 3 นาที โดยให้อัพโหลดบน YouTube
+                      และตั้งเป็น Unlisted หรือ Public
+                    </li>
+                  </ul>
+                </template>
+              </info-button>
+            </h-item>
 
-          <h-item>
-            <template v-slot:title><h2>Awards</h2></template>
-            <template v-slot:date>Sat, Jun 20 @ 22:30</template>
-            <p>
-              แจกรางวัล และปิดงาน
-            </p>
-          </h-item>
+            <h-item>
+              <template v-slot:title><h2>Present</h2></template>
+              <template v-slot:date>Sat, Jun 20 @ 20:00</template>
+              <p>
+                มารับชมผลงานของทุกคนไปพร้อมๆ กัน โดยเราจะ Live ขึ้น YouTube
+              </p>
+            </h-item>
 
-          <h-item>
-            <template v-slot:title><h2>Party</h2></template>
-            <template v-slot:date>Tue, Jun 22 @ 23:30</template>
-            <p>
-              มาเม้าท์พร้อมรับชม WWDC 2020 ไปด้วยกันบน Discord
-            </p>
-          </h-item>
+            <h-item>
+              <template v-slot:title><h2>Awards</h2></template>
+              <template v-slot:date>Sat, Jun 20 @ 22:30</template>
+              <p>
+                แจกรางวัล และปิดงาน
+              </p>
+            </h-item>
 
-          <div
-            class="flex-none"
-            style="padding-right: calc(50vw - 24rem);"
-          ></div>
+            <h-item>
+              <template v-slot:title><h2>Party</h2></template>
+              <template v-slot:date>Tue, Jun 22 @ 23:30</template>
+              <p>
+                มาเม้าท์พร้อมรับชม WWDC 2020 ไปด้วยกันบน Discord
+              </p>
+            </h-item>
+
+            <div
+              class="flex-none"
+              style="padding-right: calc(50vw - 24rem);"
+            ></div>
+          </div>
         </div>
       </div>
+      <portal-target name="modal"></portal-target>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"
+      integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/focus-visible@5.1.0/dist/focus-visible.min.js"
+      integrity="sha256-ar5bSkVmDS4cGm9DnZltimmnoaRyvhacMSGt5Re3qwU="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/dialog-polyfill@0.5.1/dist/dialog-polyfill.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/portal-vue@2.1.7/dist/portal-vue.umd.min.js"
+      integrity="sha256-hpvN0uXcWg/hXFoIk7TfFKLWKV0HMa5WOICSKiyxxn4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      Vue.use(PortalVue)
+    </script>
     <script>
       const rand = () => Math.random() * 2 - 1
       const mkdeg = () => ~~(Math.random() * 360)
@@ -193,6 +259,71 @@
                 },
               }
             },
+          },
+        })
+
+        Vue.component('info-button', {
+          template: html`<div>
+            <button
+              class="bg-black text-white font-bold py-2 px-4 rounded"
+              ref="button"
+              @click="$refs.dialog.open($event)"
+            >
+              <slot></slot>
+            </button>
+            <portal to="modal">
+              <info-dialog @close="$refs.button.focus()" ref="dialog">
+                <slot name="content"></slot>
+              </info-dialog>
+            </portal>
+          </div>`,
+        })
+
+        Vue.component('info-dialog', {
+          template: html`<div>
+            <dialog
+              ref="dialog"
+              style="background: transparent; border: none; padding: 0;"
+              :style="{ '--open-pivot': openPivot }"
+              class="text-white info-dialog"
+            >
+              <div style="width: 24rem; max-width: 90vw;" class="relative">
+                <div class="bg-black p-4 border-2 border-white">
+                  <slot></slot>
+                  <div class="mt-4">
+                    <button
+                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      @click="$refs.dialog.close()"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </dialog>
+          </div>`,
+          data() {
+            return {
+              openPivot: '0px, 0px',
+            }
+          },
+          methods: {
+            open(e) {
+              if (e) {
+                const x = e.clientX - window.innerWidth / 2
+                const y = e.clientY - window.innerHeight / 2
+                this.openPivot = `${x}px, ${y}px`
+              }
+              this.$nextTick(() => {
+                this.$refs.dialog.showModal()
+              })
+            },
+          },
+          mounted() {
+            dialogPolyfill.registerDialog(this.$refs.dialog)
+            this.$refs.dialog.addEventListener('close', () => {
+              this.$emit('close')
+            })
           },
         })
 
