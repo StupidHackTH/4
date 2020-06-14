@@ -69,7 +69,8 @@
           opacity: 0;
         }
       }
-      dialog + .backdrop {
+      .info-dialog + .backdrop,
+      .info-dialog::backdrop {
         mix-blend-mode: difference;
         background: linear-gradient(
           45deg,
@@ -84,7 +85,8 @@
         animation: 0.5s fade-in linear;
         animation-fill-mode: both;
       }
-      dialog:not([data-closing='0']) + .backdrop {
+      .info-dialog:not([data-closing='0']) + .backdrop,
+      .info-dialog:not([data-closing='0'])::backdrop {
         animation: 0.3s fade-out;
         opacity: 0;
       }
