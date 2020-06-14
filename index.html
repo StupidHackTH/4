@@ -144,6 +144,7 @@
         class="overflow-y-hidden overflow-x-scroll clear-both mt-16 mb-16 scroller"
         tabindex="0"
         ref="scroller"
+        @touchstart="scrollerDisabled = true"
         @mousemove="updateScroller($event)"
       >
         <div class="relative inline-block">
@@ -586,6 +587,7 @@
         data: {
           style1: { background: mkg() },
           style2: { background: mkg() },
+          scrollerDisabled: false,
         },
         async mounted() {},
         methods: {
@@ -597,7 +599,9 @@
             const s = this.$refs.scroller
             const x = (s.scrollWidth - innerWidth) * p
             const distance = s.scrollLeft - x
-            this.scrollDistance = distance
+            if (!this.scrollerDisabled) {
+              this.scrollDistance = distance
+            }
             if (!this.scrollActive) {
               this.scrollActive = true
               let lastTime = Date.now()
