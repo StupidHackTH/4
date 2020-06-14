@@ -141,6 +141,8 @@
       <div
         class="overflow-y-hidden overflow-x-scroll clear-both mt-16 mb-16 scroller"
         tabindex="0"
+        ref="scroller"
+        @mousemove="updateScroller($event)"
       >
         <div class="relative inline-block">
           <div class="inset-0 absolute z-20 mousetrap"></div>
@@ -582,24 +584,37 @@
         data: {
           style1: { background: mkg() },
           style2: { background: mkg() },
-          // text: {
-          //   tag: 'loading…',
-          //   section1: '',
-          //   section2: '',
-          // }
         },
-        async mounted() {
-          // const url = `https://sheets.googleapis.com/v4/spreadsheets/1u-wWaLE2qCKFshGltdNgeiles9FoQ0BbRi13TPmYZvU/values/'HTML${location.search.match(/draft/) ? '-draft' : ''}'!A:Z?key=AIzaSyDcZnqLfrZXkEKExGXw7CRSOJ-WKoAhSFc`
-          // const { values } = await fetch(url).then(r => r.json())
-          // const text = { ...this.text }
-          // for ([k, v] of values) {
-          //   text[k] = v
-          // }
-          // this.text = text
-        },
+        async mounted() {},
         methods: {
           changeColor() {
             this.style1 = { background: mkg() }
+          },
+          updateScroller(e) {
+            const p = e.clientX / innerWidth
+            const s = this.$refs.scroller
+            const x = (s.scrollWidth - innerWidth) * p
+            const distance = s.scrollLeft - x
+            this.scrollDistance = distance
+            if (!this.scrollActive) {
+              this.scrollActive = true
+              let lastTime = Date.now()
+              const frame = () => {
+                let time = Date.now()
+                const elapsed = Math.max(16, time - lastTime)
+                lastTime = time
+                const before = Math.round(this.scrollDistance)
+                this.scrollDistance *= Math.exp(-elapsed / 100)
+                const after = Math.round(this.scrollDistance)
+                if (before !== after) {
+                  s.scrollLeft += after - before
+                  requestAnimationFrame(frame)
+                } else {
+                  this.scrollActive = false
+                }
+              }
+              requestAnimationFrame(frame)
+            }
           },
         },
       })
