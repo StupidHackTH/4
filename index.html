@@ -602,10 +602,14 @@
             if (!this.scrollerDisabled) {
               this.scrollDistance = distance
             }
-            if (!this.scrollActive) {
+            if (!this.scrollActive && !this.scrollerDisabled) {
               this.scrollActive = true
               let lastTime = Date.now()
               const frame = () => {
+                if (this.scrollerDisabled) {
+                  this.scrollActive = true
+                  return
+                }
                 let time = Date.now()
                 const elapsed = Math.max(16, time - lastTime)
                 lastTime = time
