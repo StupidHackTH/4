@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>sht4 image shader</title>
     <link
-      href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
       rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@1.4.6/dist/tailwind.min.css"
+      integrity="sha256-CAI/7ThhltsmP2L2zKBYa7FknB3ZwFbD0nqL8FCdxdc="
+      crossorigin="anonymous"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
@@ -30,46 +32,79 @@
   </head>
   <body class="bg-black text-white">
     <div id="app">
-      <div class="flex">
-        <div
-          id="preview"
-          class="relative"
-          style="width: 512px; height: 512px; background: black;"
-        >
-          <div
-            class="absolute inset-0 z-10 bg-cover"
-            :style="{ backgroundImage: `url(${image})` }"
-          ></div>
-          <div
-            class="absolute inset-0 z-20 difference"
-            :style="styles.bg"
-          ></div>
-          <div
-            class="absolute inset-0 z-30 difference bg-black flex items-center justify-center font-bold"
-            style="font-size: 180px;"
-          >
-            <div :style="styles.text">sht4</div>
-          </div>
-        </div>
-        <div class="p-5">
-          <p class="mb-4">
+      <div class="flex flex-row-reverse flex-wrap">
+        <div class="p-5 flex-auto mr-auto">
+          <h1 class="text-xl">stupid image shader 4</h1>
+          <h2 class="text-yellow-300 mt-4">
+            <strong>step 1</strong> — select image
+          </h2>
+          <p class="mt-1">
             <input type="file" @change="upload" ref="file" />
           </p>
-          <p class="flex space-x-4">
+
+          <h2 class="text-yellow-300 mt-4">
+            <strong>step 2</strong> — customize
+          </h2>
+          <p class="flex space-x-4 mt-1">
             <button
-              class="relative"
+              class="relative border border-white"
               style="width: 128px; height: 128px;"
               @click="styles.bg = makeStyles().bg"
               :style="styles.bg"
             ></button>
             <button
-              class="relative bg-black inline-flex items-center justify-center font-bold appearance-none"
+              class="relative bg-black inline-flex items-center justify-center font-bold appearance-none border border-white"
               style="width: 128px; height: 128px; font-size: 45px;"
               @click="styles.text = makeStyles().text"
             >
               <div :style="styles.text">sht4</div>
             </button>
           </p>
+
+          <h2 class="text-yellow-300 mt-4">
+            <strong>step 3</strong> — download
+          </h2>
+          <p class="mt-1">
+            <button
+              class="bg-white font-bold px-8 py-4 text-black rounded"
+              @click="download"
+            >
+              download result
+            </button>
+          </p>
+        </div>
+
+        <div
+          id="preview-container"
+          class="relative flex-none"
+          style="width: 512px; height: 512px;"
+        >
+          <div
+            class="absolute top-0 left-0"
+            style="
+              width: 1024px;
+              height: 1024px;
+              transform-origin: top left;
+              transform: scale(0.5);
+            "
+          >
+            <div id="preview" class="bg-black inset-0">
+              <div
+                class="absolute inset-0 z-10 bg-cover"
+                :style="{ backgroundImage: `url(${image})` }"
+              ></div>
+              <div
+                class="absolute inset-0 z-20 difference"
+                :style="styles.bg"
+              ></div>
+              <div
+                class="absolute inset-0 z-30 difference bg-black flex items-center justify-center font-bold"
+                style="font-size: 360px;"
+              >
+                <div :style="styles.text">sht4</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -78,15 +113,30 @@
       integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68="
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/src/dom-to-image.js"
+      integrity="sha256-Tw0/gX6aFDMese6GHQJFL/ZjF+f7edyF9okFVY/B9oU="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"
+      integrity="sha256-u/J1Urdrk3nCYFefpoeTMgI5viU1ujCDu2fXXoSJjhg="
+      crossorigin="anonymous"
+    ></script>
     <script>
       const rand = () => Math.random() * 2 - 1
       const mkdeg = () => ~~(Math.random() * 360)
       const mkc = () => `hsl(${mkdeg()}deg, 100%, 50%)`
       const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`
       const makeStyles = () => {
+        const shadow = mkc()
         return {
           bg: { background: mkg() },
-          text: { transform: `rotate(${mkdeg()}deg)`, color: mkc() },
+          text: {
+            transform: `rotate(${mkdeg()}deg)`,
+            color: mkc(),
+            textShadow: `0 0 0.5ex ${shadow}`,
+          },
         }
       }
       const vm = new Vue({
@@ -98,6 +148,17 @@
         methods: {
           upload() {
             this.image = URL.createObjectURL(this.$refs.file.files[0])
+          },
+          download() {
+            domtoimage
+              .toBlob(document.getElementById('preview'), {
+                width: 1024,
+                height: 1024,
+              })
+              .then(function (blob) {
+                console.log(blob)
+                window.saveAs(blob, 'sht4.png')
+              })
           },
         },
       })
