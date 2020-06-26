@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sht4 submit</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: inter, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>sht4 submit page</h1>
+    <div id="app" class="p-3">
+      <template>
+        <committable-field
+          :value="data.description"
+          ref-key="description"
+          v-slot="{ local, changed }"
+        >
+          <div class="mb-3">
+            <h2>Description</h2>
+            <textarea
+              v-model="local.value"
+              class="form-control"
+              rows="3"
+            ></textarea>
+            <button
+              :disabled="!changed"
+              type="button"
+              class="btn btn-primary mt-1"
+              @click="write('description', local.value)"
+            >
+              Save
+            </button>
+          </div>
+        </committable-field>
+
+        <committable-field
+          :value="data.url"
+          ref-key="url"
+          v-slot="{ local, changed }"
+        >
+          <div class="mb-3">
+            <h2>URL</h2>
+            <input v-model="local.value" class="form-control" />
+            <button
+              :disabled="!changed"
+              type="button"
+              class="btn btn-primary mt-1"
+              @click="write('url', local.value)"
+            >
+              Save
+            </button>
+          </div>
+        </committable-field>
+
+        <committable-field
+          :value="data.youtube"
+          ref-key="youtube"
+          v-slot="{ local, changed }"
+        >
+          <div class="mb-3">
+            <h2>YouTube Link</h2>
+            <div class="input-group">
+              <span class="input-group-text">https://youtu.be/</span>
+              <input
+                v-model="local.value"
+                class="form-control"
+                placeholder="dQw4w9WgXcQ"
+              />
+            </div>
+            <button
+              :disabled="!changed"
+              type="button"
+              class="btn btn-primary mt-1"
+              @click="write('youtube', local.value)"
+            >
+              Save
+            </button>
+          </div>
+        </committable-field>
+      </template>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"
+      integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-database.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: 'AIzaSyBm7onpz9n5IhpQnMldcY0PbKzJFOGoH-o',
+        authDomain: 'firet0y.firebaseapp.com',
+        databaseURL: 'https://firet0y.firebaseio.com',
+        projectId: 'firet0y',
+        storageBucket: 'firet0y.appspot.com',
+        messagingSenderId: '1047007358320',
+        appId: '1:1047007358320:web:8c697b8a6f26ee9852f3b5',
+      }
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+    </script>
+    <script>
+      let mainTenant = sessionStorage.SHT4_DATA_TENANT
+      let authMatch = location.hash.match(/tn=([a-zA-Z0-9-]+)/)
+      if (authMatch) {
+        mainTenant = authMatch[1]
+        sessionStorage.SHT4_DATA_TENANT = mainTenant
+        location.hash = '#_=_'
+      }
+      if (!mainTenant) {
+        alert('No authorization key supplied.')
+        throw new Error('No authorization key supplied.')
+      }
+
+      const dataRef = firebase.database().ref(`data/${mainTenant}`)
+
+      Vue.component('committable-field', {
+        props: ['value'],
+        template: `<span><slot :local="local" :changed="changed"></slot></span>`,
+        data() {
+          return {
+            local: new Vue({
+              data: { value: this.value },
+            }),
+          }
+        },
+        watch: {
+          value(newValue, oldValue) {
+            if (this.local.value === oldValue) {
+              this.local.value = newValue
+            }
+          },
+        },
+        computed: {
+          changed() {
+            return this.local.value !== this.value
+          },
+        },
+      })
+
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          dataRef,
+          data: {},
+        },
+        methods: {
+          write(name, value) {
+            name
+              .split('.')
+              .reduce((r, n) => r.child(n), dataRef)
+              .set(value)
+          },
+        },
+        mounted() {
+          dataRef.on(
+            'value',
+            (s) => {
+              this.data = s.val()
+            },
+            () => {
+              alert('Fail to authenticate...')
+              vm.$destroy()
+            },
+          )
+        },
+      })
+    </script>
+  </body>
+</html>
