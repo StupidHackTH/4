@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sht4</title>
+    <link
+      href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Itim&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/dialog-polyfill@0.5.1/dialog-polyfill.css"
+      integrity="sha256-hT0ET4tfm+7MyjeBepBgV2N5tOmsAVKcTWhH82jvoaA="
+      crossorigin="anonymous"
+    />
+    <meta
+      property="og:image"
+      content="https://repository-images.githubusercontent.com/271521284/1dc64900-af50-11ea-8c35-a274264e6442"
+    />
+    <meta property="og:site_name" content="The Stupid Hackathon Thailand" />
+    <meta
+      property="og:title"
+      content="stupid hackathon thailand the fourth / virtual 2020"
+    />
+    <meta property="og:url" content="https://stupidhackth.github.io/4/" />
+    <meta
+      property="og:description"
+      content="งานที่จะให้ทุกคนได้ทำไอเดียบ้าๆ บอๆ ให้กลายเป็นจริง!"
+    />
+
+    <style>
+      body {
+        font-family: inter, sans-serif;
+        --block-transform: translate(0, 0);
+      }
+      .difference {
+        mix-blend-mode: difference;
+      }
+      .our-shadow {
+        color: white;
+        text-shadow: -4px -4px 0 #000, -2px -2px 0 #000, 1px -1px 0 #000,
+          1px 1px 0 #000, -1px 1px 0 #000;
+      }
+      .block-transform {
+        transform: var(--block-transform);
+      }
+      [data-js-focus-visible] .scroller[data-focus-visible-added] .mousetrap {
+        background: #fff6;
+      }
+      .info-dialog[open] {
+        will-change: transform, opacity, filter;
+        animation: 0.5s open-dialog linear;
+        --open-pivot: 0px, 0px;
+      }
+      .info-dialog[data-closing='1'] {
+        animation: 0.3s closing-dialog linear;
+        animation-fill-mode: both;
+        filter: invert(1);
+        mix-blend-mode: difference;
+        user-select: none;
+      }
+      @keyframes open-dialog {
+        from {
+          transform: translate(var(--open-pivot)) scale(0.0001) rotate(1080deg);
+        }
+        to {
+          transform: translate(0, 0) scale(1) rotate(0deg);
+        }
+      }
+      @keyframes closing-dialog {
+        from {
+          transform: scale(1);
+          opacity: 1;
+        }
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+      .info-dialog + .backdrop,
+      .info-dialog::backdrop {
+        mix-blend-mode: difference;
+        background: linear-gradient(
+          45deg,
+          red,
+          yellow,
+          lime,
+          cyan,
+          blue,
+          fuchsia,
+          red
+        );
+        animation: 0.5s fade-in linear;
+        animation-fill-mode: both;
+      }
+      .info-dialog:not([data-closing='0']) + .backdrop,
+      .info-dialog:not([data-closing='0'])::backdrop {
+        animation: 0.3s fade-out;
+        opacity: 0;
+      }
+      @keyframes fade-in {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes fade-out {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-black">
+    <div id="app">
+      <div
+        style="
+          background-image: url('https://cdn.glitch.com/b08ea369-c88e-4e87-859b-e1f3e6dfc59e%2Fpeerapon-chantharainthron-Sq0rixiwakc-unsplash%20(1).jpg?v=1589308130481');
+        "
+        class="fixed top-0 left-0 w-screen h-screen z-10 bg-cover bg-bottom"
+      ></div>
+      <div
+        class="fixed top-0 left-0 w-screen h-screen z-20 difference"
+        :style="style1"
+        @touchstart="changeColor"
+        @mouseenter="changeColor"
+      ></div>
+      <div class="relative mx-auto max-w-4xl p-8" style="padding-top: 16vh;">
+        <div class="mb-6" style="--block-transform: rotate(-3deg);">
+          <block glow>
+            <div class="py-6 px-8 text-6xl font-bold">
+              stupid hackathon thailand the fourth / virtual 2020
+            </div>
+          </block>
+        </div>
+        <div
+          class="text-right float-right"
+          style="--block-transform: rotate(5deg); margin-top: -5rem;"
+        >
+          <block glow>
+            <div class="py-6 px-8 text-4xl font-bold">jun 24~27</div>
+          </block>
+        </div>
+      </div>
+
+      <div
+        class="overflow-y-hidden overflow-x-scroll clear-both mt-16 mb-16 scroller"
+        tabindex="0"
+        ref="scroller"
+        @touchstart="scrollerDisabled = true"
+        @mousemove="updateScroller($event)"
+      >
+        <div class="relative inline-block">
+          <div class="inset-0 absolute z-20 mousetrap"></div>
+          <div class="flex relative">
+            <div
+              class="flex-none"
+              style="padding-left: calc(50vw - 24rem);"
+            ></div>
+
+            <h-item>
+              <template v-slot:title><h2>about</h2></template>
+              <p class="mb-3">
+                สร้างสิ่งของเพี้ยนๆ ที่ไม่มีใครต้องการ และทำไอเดียบ้าๆ บอๆ
+                ให้กลายเป็นจริง! งาน Hackathon แบบกี๊คๆ ที่ไม่จำกัดไอเดีย
+                ไม่เน้นฝั่งธุรกิจ แต่เน้นความสนุกสำหรับนักพัฒนาแบบเพียวๆ!!
+              </p>
+
+              <info-button>
+                🤔 ทำโปรเจคอะไรดี?
+                <template v-slot:content>
+                  <p class="mb-3">
+                    งาน Hackathon นี้ ไม่จำกัดไอเดีย เน้นความสนุกล้วนๆ
+                    ฉะนั้นอยากทำอะไร ทำเลย!
+                  </p>
+                  <p class="mb-3">
+                    แต่ถ้ายังไม่รู้จะทำโปรเจคอะไรดี
+                    ลองหาแรงบันดาลใจได้ตามบทความรีวิวงาน Stupid Hackathon ต่างๆ
+                    ต่อไปนี้ได้เลย~
+                  </p>
+                  <div class="text-base mb-2">
+                    <p>
+                      👇 The Stupid Hackathon Thailand #3
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://medium.com/kulapofficial/stupid-hackathon-a06e978f1073"
+                        target="_blank"
+                      >
+                        👉 “ทีมขอแชร์นะครับ” ในงาน The Stupid Hackathon ครั้งที่
+                        3 / KULAPofficial
+                      </a>
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://blog.rayriffy.com/review-the-stupid-hackathon-th-3"
+                        target="_blank"
+                      >
+                        👉 "ริฟฟี่พ่อทุกสถาบัน" กับ The Stupid Hackathon
+                        Thailand #3
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-base mb-2">
+                    <p>
+                      👇 The Stupid Hackathon Thailand #2
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://medium.com/teamappman/%E0%B8%A1%E0%B8%B2%E0%B9%80%E0%B8%A5%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B8%B2%E0%B8%99-the-stupid-hackathon-thailand-2-%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99%E0%B8%81%E0%B8%B1%E0%B8%99%E0%B8%84%E0%B9%88%E0%B8%B0-a6310bbe47e4"
+                        target="_blank"
+                      >
+                        👉 มาเล่างาน The Stupid Hackathon Thailand #2
+                        ให้อ่านกันค่ะ / teamappman
+                      </a>
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://blog.rayriffy.com/review-the-stupid-hackathon-th-2"
+                        target="_blank"
+                      >
+                        👉 The Stupid Hackathon Thailand 2 ที่มา Epic
+                        กว่าปีที่แล้ว / by Phumrapee Limpianchop
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-base mb-2">
+                    <p>
+                      👇 The Stupid Hackathon Bangkok #1
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://medium.com/@jay44411/review-the-stupid-hackathon-bangkok%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B9%84%E0%B8%94%E0%B9%89%E0%B9%82%E0%B8%87%E0%B9%88%E0%B8%95%E0%B8%B2%E0%B8%A1%E0%B8%87%E0%B8%B2%E0%B8%99-3a79b025f8a1"
+                        target="_blank"
+                      >
+                        👉 [Review] The Stupid Hackathon
+                        Bangkokที่ไม่ได้โง่ตามชื่องาน / Tianwit moungnoycharoen
+                      </a>
+                    </p>
+                  </div>
+                  <div class="text-base mb-2">
+                    <p>
+                      👇 จาก Stupid Hackathon ณ ต่างแดน
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://www.theverge.com/tldr/2017/3/3/14800042/stupid-hackathon-creation-2017"
+                        target="_blank"
+                      >
+                        👉 Stupid Hackathon celebrates terrible tech with
+                        eyeball pong, a robot porn addict, and more
+                      </a>
+                    </p>
+                    <p class="pl-8" style="text-indent: -1.5rem;">
+                      <a
+                        class="text-yellow-300"
+                        href="https://engineers.sg/organization/supersillyhackathon"
+                        target="_blank"
+                      >
+                        👉 Super Silly Hackathon (videos)
+                      </a>
+                    </p>
+                  </div>
+                </template>
+              </info-button>
+            </h-item>
+
+            <h-item>
+              <template v-slot:title><h2>Sign up</h2></template>
+              <template v-slot:date>now open!!!!!!!</template>
+              <p class="mb-3">
+                ลงทะเบียนเพื่อเข้าร่วมงาน โดยเมื่อลงทะเบียนแล้ว เราจะส่ง Invite
+                ให้เข้าร่วมเซิฟเวอร์ Discord ของงาน
+              </p>
+
+              <div class="mb-3">
+                <info-button>
+                  🤔 ต้องรวมทีมมาก่อนไหม?
+                  <template v-slot:content>
+                    <p class="mb-3">
+                      <span class="text-yellow-300">ต้องรวมทีมมาก่อนไหม?:</span>
+                      ไม่จำเป็นต้องรวมทีมมาก่อน โดยภายในงานจะมีช่วงสำหรับตั้งทีม
+                      แต่ถ้ามีทีมมาอยู่แล้ว ก็มาเป็นทีมได้เลย~
+                    </p>
+                  </template>
+                </info-button>
+              </div>
+              <p class="mb-3">
+                ลงทะเบียนเพื่อเข้าร่วมงาน
+              </p>
+              <p class="mb-3">
+                <a
+                  href="https://www.eventpop.me/e/9084/stupid-hackathon-thailand-the-fourth-virtual-2020-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                  class="bg-black text-white py-2 px-4 rounded inline-block border border-white"
+                  target="_blank"
+                >
+                  🎟 Get tickets on Eventpop!
+                </a>
+              </p>
+              <p class="mb-3">
+                ติดตามข่าวสารได้ทาง
+              </p>
+              <p>
+                <a
+                  href="https://www.facebook.com/events/877139079446200/"
+                  class="bg-black text-white py-2 px-4 rounded inline-block border border-white"
+                  target="_blank"
+                >
+                  🗓 Facebook event
+                </a>
+              </p>
+            </h-item>
+
+            <h-item>
+              <template v-slot:title><h2>Opening</h2></template>
+              <template v-slot:date>Wed, Jun 24 @ 20:00</template>
+              <p class="mb-3">
+                มาเปิดงานด้วยกันบน Discord และพบปะกับคนอื่นๆ ในงาน
+                และเริ่มตั้งทีม
+              </p>
+              <p class="mb-3">
+                เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงานให้แต่ละทีม
+              </p>
+              <info-button>
+                🤔 ถ้ามาไม่ทันช่วงเปิดงานล่ะ?
+                <template v-slot:content>
+                  <p class="mb-3">
+                    ถ้าไม่ได้เข้าร่วมช่วงเปิดงาน ไม่เป็นไรครับ
+                    ทีมงานจะโพสต์เนื้อหาต่างๆ โดยผู้เข้าร่วมสามารถหาทีม
+                    และร่วมโปรเจคผ่านทาง Virtual space ต่างๆ ภายในงานได้เลยครับ
+                  </p>
+                </template>
+              </info-button>
+            </h-item>
+
+            <h-item>
+              <template v-slot:title><h2>Hack</h2></template>
+              <template v-slot:date>Wed, Jun 24 @ 21:00</template>
+              <p class="mb-3">
+                Hack กันตามอัธยาศัย โดยทุกท่านสามารถใช้ Virtual space ต่างๆ
+                ภายในงานได้เต็มที่
+              </p>
+              <p class="mb-3">
+                สามารถส่งผลงานได้จนถึงวันเสาร์ที่ 27 เวลา 19:00 น.
+                ประกอบไปด้วยวีดีโอความยาวไม่เกิน 3 นาที
+              </p>
+
+              <info-button>
+                🤔 การส่งผลงาน
+                <template v-slot:content>
+                  <p class="mb-3">
+                    <span class="text-yellow-300">การส่งผลงาน:</span>
+                    เมื่อตั้งทีมแล้ว เราจะส่งหน้าเว็บสำหรับส่งผลงานไปให้ครับ
+                    โดยจะขอให้ส่งผลงานภายในวันเสาร์ที่ 27 เวลา 19:00 น.
+                    ประกอบไปด้วย:
+                  </p>
+                  <ul class="list-disc pl-6">
+                    <li>ชื่อผลงาน</li>
+                    <li>URL ลิงค์เดโม่</li>
+                    <li>
+                      วีดีโอความยาวไม่เกิน 3 นาที โดยให้อัพโหลดบน YouTube
+                      และตั้งเป็น Unlisted หรือ Public
+                      โดยเราจะเปิดวีดีโอที่ส่งเข้ามาในช่วงนำเสนอผลงานครับ
+                    </li>
+                  </ul>
+                </template>
+              </info-button>
+            </h-item>
+
+            <h-item>
+              <template v-slot:title><h2>Present</h2></template>
+              <template v-slot:date>Sat, Jun 27 @ 20:00</template>
+              <p class="mb-3">
+                มารับชมผลงานของทุกคนไปพร้อมๆ กัน โดยเราจะ Live ขึ้น YouTube
+              </p>
+
+              <p>
+                <a
+                  href="https://www.youtube.com/watch?v=IC802Xdd5mg"
+                  class="bg-black text-white py-2 px-4 rounded inline-block border border-white"
+                  target="_blank"
+                >
+                  🍿 Watch the presentations on YouTube Live
+                </a>
+              </p>
+            </h-item>
+
+            <h-item>
+              <template v-slot:title><h2>Awards</h2></template>
+              <template v-slot:date>Sat, Jun 27 @ 22:30</template>
+              <p>
+                แจกรางวัล และปิดงาน~
+              </p>
+            </h-item>
+
+            <div
+              class="flex-none"
+              style="padding-right: calc(50vw - 24rem);"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <portal-target multiple name="modal"></portal-target>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"
+      integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/focus-visible@5.1.0/dist/focus-visible.min.js"
+      integrity="sha256-ar5bSkVmDS4cGm9DnZltimmnoaRyvhacMSGt5Re3qwU="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/dialog-polyfill@0.5.1/dist/dialog-polyfill.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/portal-vue@2.1.7/dist/portal-vue.umd.min.js"
+      integrity="sha256-hpvN0uXcWg/hXFoIk7TfFKLWKV0HMa5WOICSKiyxxn4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      Vue.use(PortalVue)
+    </script>
+    <script>
+      const rand = () => Math.random() * 2 - 1
+      const mkdeg = () => ~~(Math.random() * 360)
+      const mkc = () => `hsl(${mkdeg()}deg, 100%, 50%)`
+      const mkg = () => `linear-gradient(${mkdeg()}deg, ${mkc()}, ${mkc()})`
+      let counter = 0
+      {
+        const html = String.raw
+        Vue.component('block', {
+          props: ['glow'],
+          template: html`<section
+            class="relative"
+            @touchstart="changeColor($event)"
+            @mouseenter="changeColor($event)"
+          >
+            <div
+              class="block-transform absolute z-30 inset-0 difference"
+              :style="style1"
+            ></div>
+            <div class="block-transform relative z-40 our-shadow">
+              <slot></slot>
+            </div>
+            <div
+              v-if="glow != null"
+              class="absolute z-40 inset-0 difference select-none pointer-events-none"
+              style="background: black"
+              :style="style2"
+            >
+              <slot></slot>
+            </div>
+          </section>`,
+          data() {
+            return {
+              ...this.generateStyles(),
+            }
+          },
+          methods: {
+            changeColor(e) {
+              Object.assign(this, this.generateStyles())
+            },
+            generateStyles() {
+              return {
+                style1: {
+                  background: mkg(),
+                  border: `8px solid black`,
+                  borderColor: `${mkc()} ${mkc()} ${mkc()} ${mkc()}`,
+                },
+                style2: {
+                  textShadow: `0 0 0.5em ${mkc()}`,
+                  color: mkc(),
+                  transform: `var(--block-transform) rotate(${rand()}deg) translate(${
+                    rand() * 4
+                  }px, ${rand() * 4}px)`,
+                },
+              }
+            },
+          },
+        })
+
+        Vue.component('info-button', {
+          template: html`<div>
+            <button
+              class="bg-black text-white py-2 px-4 rounded border border-white"
+              ref="button"
+              @click="$refs.dialog.open($event)"
+            >
+              <slot></slot>
+            </button>
+            <portal to="modal">
+              <info-dialog @close="$refs.button.focus()" ref="dialog">
+                <slot name="content"></slot>
+              </info-dialog>
+            </portal>
+          </div>`,
+        })
+
+        Vue.component('info-dialog', {
+          template: html`<div>
+            <dialog
+              ref="dialog"
+              style="background: transparent; border: none; padding: 0; font-family: Itim, Inter, sans-serif;"
+              :style="{ '--open-pivot': openPivot }"
+              :data-closing="closing ? 1 : 0"
+              class="text-white info-dialog text-2xl my-8"
+            >
+              <div style="width: 24rem; max-width: 90vw;" class="relative">
+                <div class="bg-black p-4 border-2 border-white">
+                  <slot></slot>
+                  <div class="mt-4 text-right">
+                    <button class="text-4xl" @click="close()">
+                      🆗
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </dialog>
+          </div>`,
+          data() {
+            return {
+              openPivot: '0px, 0px',
+              closing: false,
+            }
+          },
+          methods: {
+            open(e) {
+              if (e) {
+                const x = e.clientX - window.innerWidth / 2
+                const y = e.clientY - window.innerHeight / 2
+                this.openPivot = `${x}px, ${y}px`
+              }
+              this.$nextTick(() => {
+                this.$refs.dialog.showModal()
+              })
+            },
+            close() {
+              this.closing = true
+              setTimeout(() => {
+                this.closing = false
+                this.$refs.dialog.close()
+              }, 400)
+            },
+          },
+          mounted() {
+            dialogPolyfill.registerDialog(this.$refs.dialog)
+            this.$refs.dialog.addEventListener('close', () => {
+              this.$emit('close')
+            })
+          },
+        })
+
+        Vue.component('h-item', {
+          props: [],
+          template: html`<div
+            class="relative flex-none mx-4"
+            style="width: 24rem; max-width: 80vw;"
+            @mouseenter="changeColor"
+            @touchstart="changeColor"
+          >
+            <div class="absolute inset-0 z-20 difference" :style="style1"></div>
+            <div class="relative flex flex-col h-full z-30">
+              <div
+                class="flex-none p-3 lowercase"
+                style="text-shadow: 0 0 4px black, 0 0 4px black;"
+              >
+                <div class="font-bold text-white text-4xl leading-none">
+                  <slot name="title"></slot>
+                </div>
+              </div>
+              <div
+                class="text-white p-3 flex-auto text-2xl"
+                style="background: rgba(0,0,0,0.64); font-family: Itim, Inter, sans-serif;"
+              >
+                <div class="text-yellow-200 mb-2 lowercase">
+                  <slot name="date"></slot>
+                </div>
+                <slot></slot>
+              </div>
+            </div>
+          </div>`,
+
+          data() {
+            return {
+              ...this.generateStyles(),
+            }
+          },
+          methods: {
+            changeColor(e) {
+              Object.assign(this, this.generateStyles())
+            },
+            generateStyles() {
+              return {
+                style1: {
+                  background: mkg(),
+                },
+              }
+            },
+          },
+        })
+      }
+
+      const vm = new Vue({
+        el: '#app',
+        data: {
+          style1: { background: mkg() },
+          style2: { background: mkg() },
+          scrollerDisabled: false,
+        },
+        async mounted() {},
+        methods: {
+          changeColor() {
+            this.style1 = { background: mkg() }
+          },
+          updateScroller(e) {
+            const p = e.clientX / innerWidth
+            const s = this.$refs.scroller
+            const x = (s.scrollWidth - innerWidth) * p
+            const distance = s.scrollLeft - x
+            if (!this.scrollerDisabled) {
+              this.scrollDistance = distance
+            }
+            if (!this.scrollActive && !this.scrollerDisabled) {
+              this.scrollActive = true
+              let lastTime = Date.now()
+              const frame = () => {
+                if (this.scrollerDisabled) {
+                  this.scrollActive = true
+                  return
+                }
+                let time = Date.now()
+                const elapsed = Math.max(16, time - lastTime)
+                lastTime = time
+                const before = Math.round(this.scrollDistance)
+                this.scrollDistance *= Math.exp(-elapsed / 100)
+                const after = Math.round(this.scrollDistance)
+                if (before !== after) {
+                  s.scrollLeft += after - before
+                  requestAnimationFrame(frame)
+                } else {
+                  this.scrollActive = false
+                }
+              }
+              requestAnimationFrame(frame)
+            }
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
