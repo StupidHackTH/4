@@ -35,6 +35,9 @@
     />
 
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         font-family: inter, sans-serif;
         --block-transform: translate(0, 0);
@@ -136,8 +139,11 @@
         @touchstart="changeColor"
         @mouseenter="changeColor"
       ></div>
-      <div class="relative mx-auto max-w-4xl p-8 mb-16" style="padding-top: 16vh;">
-        <div class="mb-6" style="--block-transform: rotate(-3deg);">
+      <div
+        class="relative mx-auto max-w-4xl p-8 mb-16"
+        style="padding-top: 16vh"
+      >
+        <div class="mb-6" style="--block-transform: rotate(-3deg)">
           <block glow>
             <div class="py-6 px-8 text-6xl font-bold">
               stupid hackathon thailand the fourth / virtual 2020
@@ -146,7 +152,7 @@
         </div>
         <div
           class="text-right float-right"
-          style="--block-transform: rotate(5deg); margin-top: -5rem;"
+          style="--block-transform: rotate(5deg); margin-top: -5rem"
         >
           <block glow>
             <div class="py-6 px-8 text-4xl font-bold">jun 24~27</div>
@@ -162,28 +168,75 @@
         </div>
       </div>
 
-      <div v-for="project of projects" class="mb-12">
+      <div class="mb-12">
+        <h-item>
+          <template v-slot:title>
+            <h3 class="leading-normal text-center">
+              <strong class="block text-5xl leading-tight -mt-2">
+                🏆 awards 🏆
+              </strong>
+            </h3>
+          </template>
+          <div class="mb-4 text-xl">
+            <div v-for="award of awards" class="mt-2">
+              <h4>{{award.title}}</h4>
+              <ul class="list-disc pl-8">
+                <li v-if="award.stupid">
+                  <strong style="color: #07f">Most stupid</strong>
+                  <team-link :team="award.stupid"></team-link>
+                </li>
+                <li v-if="award.stupid2">
+                  <strong style="color: #f07">2nd most stupid</strong>
+                  <team-link :team="award.stupid2"></team-link>
+                </li>
+                <li v-if="award.notStupid">
+                  <strong style="color: #f07">Most not stupid</strong>
+                  <team-link :team="award.notStupid"></team-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </h-item>
+      </div>
+
+      <div
+        v-for="project of projects"
+        class="mb-12"
+        :id="project.team.slice(0, 6)"
+      >
         <h-item>
           <template v-slot:title>
             <a :href="project.url">
               <h3 class="leading-normal">
-                <cite class="not-italic opacity-75 text-xl block">{{project.team}}</cite>
-                <strong class="block text-5xl leading-tight -mt-2">{{project.title}}</strong>
+                <cite class="not-italic opacity-75 text-xl block"
+                  >{{project.team}}</cite
+                >
+                <strong
+                  class="
+                    block
+                    text-5xl
+                    leading-tight
+                    -mt-2
+                    hover:underline hover:text-yellow-300
+                  "
+                  >{{project.title}}</strong
+                >
               </h3>
             </a>
           </template>
           <div class="mb-4 text-lg">
             <span class="opacity-75">Members:</span>
-            <span v-for="member of project.members.split(',')" class="ml-2 rounded px-2" style="background:#0004">{{member}}</span>
+            <span
+              v-for="member of project.members.split(',')"
+              class="ml-2 rounded px-2"
+              style="background: #0004"
+              >{{member}}</span
+            >
           </div>
-          <div class="mb-4">
-            {{project.description}}
-          </div>
+          <div class="mb-4">{{project.description}}</div>
           <youtube :id="project.youtube"></youtube>
         </h-item>
       </div>
-
-
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"
@@ -266,8 +319,17 @@
         Vue.component('youtube', {
           props: ['id'],
           template: html`<div class="relative" style="padding-bottom: 56.25%">
-            <iframe class="inset-0 absolute" width="100%" height="100%" :src="'https://www.youtube.com/embed/'+id" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>`
+            <iframe
+              class="inset-0 absolute"
+              width="100%"
+              height="100%"
+              :src="'https://www.youtube.com/embed/'+id"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>`,
         })
 
         Vue.component('h-item', {
@@ -325,7 +387,8 @@
           title: 'เชื่อผม… ผมคิดมาแล้ว',
           url: 'https://github.com/puripant/drawing-board',
           youtube: 'uOHfVzWjwnA',
-          description: "This simple web app generates sketch lines from an image as if it was well thought out. It mainly uses the implementation of Hough transforms in OpenCV.js."
+          description:
+            'This simple web app generates sketch lines from an image as if it was well thought out. It mainly uses the implementation of Hough transforms in OpenCV.js.',
         },
         {
           team: 'team01: coldtothetouch',
@@ -333,7 +396,8 @@
           title: 'devlexian',
           url: 'https://github.com/pknn1/devlexian',
           youtube: 'QB0uGqh9vKQ',
-          description: "Can't understand somebody else's code, maybe its not their problem, neither your problem. (Sorry for the presentation video, can't find any free time to properly do it)"
+          description:
+            "Can't understand somebody else's code, maybe its not their problem, neither your problem. (Sorry for the presentation video, can't find any free time to properly do it)",
         },
         {
           team: 'team03',
@@ -341,7 +405,8 @@
           title: 'Bot_BohBah',
           url: 'https://github.com/smurf136/Bot_BohBah',
           youtube: 'CbFAy0dg_No',
-          description: "เป็นบอทเล่นมุขไว้เป็นเพื่อนเล่นแก้เหงา คลายเครียด(หรืออาจจะเครียดกว่าเดิม 5555)	"			,
+          description:
+            'เป็นบอทเล่นมุขไว้เป็นเพื่อนเล่นแก้เหงา คลายเครียด(หรืออาจจะเครียดกว่าเดิม 5555)	',
         },
         {
           team: 'team05: Game Show Hangout',
@@ -357,7 +422,8 @@
           title: 'Tuudhub',
           url: 'https://github.com/nonkung51/tuud-hub',
           youtube: '-CNcLb5J0gE',
-          description: "เราอยากจะทำโซเชียล ที่ปลอดภัยกับทุก ๆ คน เราก็เลยสังเกตุจากรายการทีวี และเล็งเห็นว่าวิธีที่จะทำให้สื่อทำให้สิ่งต่าง ๆ ปลอดภัย สำหรับเด็กนั่นคือแนวคิดที่เรียกว่า การ “เซ็นเซอร์”	"
+          description:
+            'เราอยากจะทำโซเชียล ที่ปลอดภัยกับทุก ๆ คน เราก็เลยสังเกตุจากรายการทีวี และเล็งเห็นว่าวิธีที่จะทำให้สื่อทำให้สิ่งต่าง ๆ ปลอดภัย สำหรับเด็กนั่นคือแนวคิดที่เรียกว่า การ “เซ็นเซอร์”	',
         },
         {
           team: 'team07: twm.js',
@@ -365,7 +431,8 @@
           title: 'Trolling Window Manager',
           url: 'https://github.com/narze/twm.js',
           youtube: 'AEBRXHp3Xq0',
-          description: 'A window manager app which trolls you if you move the mouse.'
+          description:
+            'A window manager app which trolls you if you move the mouse.',
         },
         {
           team: 'team09: Khakai',
@@ -373,7 +440,8 @@
           title: 'Khakai Life Coach',
           url: 'https://github.com/drd4n/khumkhomext',
           youtube: 'XRVF1a2FL4c',
-          description: 'Chrome Extension สร้างแรงบันดาลใจในการทำงานจากประสบการณ์ของนายช้อณ',
+          description:
+            'Chrome Extension สร้างแรงบันดาลใจในการทำงานจากประสบการณ์ของนายช้อณ',
         },
         {
           team: 'team10: Dumbassembly',
@@ -381,15 +449,17 @@
           title: 'Use Human Labor to run Assembly!',
           url: 'https://github.com/phoomparin/dumbassembler',
           youtube: 'l064XhZlHpk',
-          description: 'มาสร้าง CPU ที่เร็วกว่า Apple Silicon และให้มนุษย์มาแทนคอมกันเถอะ!'
+          description:
+            'มาสร้าง CPU ที่เร็วกว่า Apple Silicon และให้มนุษย์มาแทนคอมกันเถอะ!',
         },
         {
           team: 'team11',
-          members: '🔥 M\'James IN YOUR AREA,TBTH',
+          members: "🔥 M'James IN YOUR AREA,TBTH",
           title: '🚌MEYPAY',
           url: 'https://meypay.netlify.app/',
           youtube: 'MxmmEDugS7k',
-          description: 'เว็บแอพที่จะทำให้การขึ้นรถเมล์ของคุณจากเรื่องง่ายให้เป็นเรื่องยาก Link QR Code สำหรับเติมเงิน และ ชำระเงิน : https://meypay-qr.netlify.app/ ถ้าเจอ Bug อะไรต้องขออภัยด้วยนะฮับ 😅 #งานเผา'
+          description:
+            'เว็บแอพที่จะทำให้การขึ้นรถเมล์ของคุณจากเรื่องง่ายให้เป็นเรื่องยาก Link QR Code สำหรับเติมเงิน และ ชำระเงิน : https://meypay-qr.netlify.app/ ถ้าเจอ Bug อะไรต้องขออภัยด้วยนะฮับ 😅 #งานเผา',
         },
         {
           team: 'team12',
@@ -397,7 +467,8 @@
           title: 'Covid-19 Trainer',
           url: 'https://covid-trainer.web.app/',
           youtube: 'Xpx7FnriN9k',
-          description: "Combining the power of cutting-edge web technology (React) and information technology (firebase) to help you fight Covid-19 by staying healthy.	"			
+          description:
+            'Combining the power of cutting-edge web technology (React) and information technology (firebase) to help you fight Covid-19 by staying healthy.	',
         },
         {
           team: 'team13',
@@ -405,7 +476,8 @@
           title: 'Hacknarok',
           url: 'https://github.com/iyawat/Hacknarok',
           youtube: '38Ho0Yi1ebE',
-          description: "hack ragnarok server with ERC20 token. Buy token with Ether and You can nuke, doom (kill all), summon monster, jai, unjail player with your token."
+          description:
+            'hack ragnarok server with ERC20 token. Buy token with Ether and You can nuke, doom (kill all), summon monster, jai, unjail player with your token.',
         },
         {
           team: 'team14: Milkteaaaaaa',
@@ -413,7 +485,8 @@
           title: 'Web Destroyer',
           url: 'https://github.com/cardeer/web_destroyer',
           youtube: 'onCZ58gFDdY',
-          description: "Destroy your web and 💣 your brain For every seal lover"
+          description:
+            'Destroy your web and 💣 your brain For every seal lover',
         },
         {
           team: 'team15: m o n e y p r i n t e r g o 🅱️ r r r r r',
@@ -421,7 +494,7 @@
           title: 'Token Spammer',
           url: 'https://github.com/pumipatw/token-spammer',
           youtube: 'm2vJg95vvzo',
-          description: "Sending message as a token on Ethereum!	"			,
+          description: 'Sending message as a token on Ethereum!	',
         },
         {
           team: 'team16: 16Perna',
@@ -429,7 +502,8 @@
           title: 'CSS Destroyer Chrome Extension',
           url: 'https://github.com/QuadieZ/16_SHT4',
           youtube: 'NP30VTvuPZI',
-          description: "Chrome Extension ที่จะทำให้หน้าเว็บสดใสน่ามอง(?)ขึ้น        "
+          description:
+            'Chrome Extension ที่จะทำให้หน้าเว็บสดใสน่ามอง(?)ขึ้น        ',
         },
         {
           team: 'team17: อะไร',
@@ -437,7 +511,8 @@
           title: 'The Empty',
           url: 'https://mnahctipus.github.io/empty/',
           youtube: 'F6bSdgt0naI',
-          description: "Space for cool man is empty. We think a lot and spend time with the advantage features. Otherwise, you don't need to try to be a genius. You can do a lot of stupid things like what others don't have opportunities to do it! Keep going to check out our website. Last, stay calm and sit down for an hour or more."
+          description:
+            "Space for cool man is empty. We think a lot and spend time with the advantage features. Otherwise, you don't need to try to be a genius. You can do a lot of stupid things like what others don't have opportunities to do it! Keep going to check out our website. Last, stay calm and sit down for an hour or more.",
         },
         {
           team: 'team20: https://shorturl.at/esBZ9',
@@ -445,14 +520,16 @@
           title: 'Rickrolling Chrome Extension',
           url: 'https://mnahctipus.github.io/empty/',
           youtube: 'dQw4w9WgXcQ',
-          description: "Randomly change hyperlink destination to various version of Never Gonna Give You Up music video"
+          description:
+            'Randomly change hyperlink destination to various version of Never Gonna Give You Up music video',
         },
         {
           team: 'team21: Tic Tac Toe ถ้าไม่มี O ก็เป็น Tic Tac Te',
           members: 'McSmiley',
-          title: 'McSmiley\'s Tic Tac Toe',
+          title: "McSmiley's Tic Tac Toe",
           youtube: 'vw_lESMbSTE',
-          description: "Tic Tac Toe has O, not X. For this reason, O should win. อันนี้ดัดแปลงจากเกม tic tac toe ปกติฮะ โค้ดปกติยังมีให้เห็นอยู่เลย ปกติบอทจะใช้ minimax algorithm (ยังบัคอยู๋เลย -3-) แต่คราวนี้เราจะมา Bias เข้าข้าง O สุดฤทธิ์ ตามกติกาปกติแล้ว ฝ่าย O จะเริ่มหลัง X เสมอ ผมรู้สึกสงสาร O ที่ต้องตามหลัง X ทุกครั้ง จึงอยากจะช่วยให้ O ได้ระบายความแค้นบ้าง นอกจากนี้ ตัว X ยังเปรียบเสมือนสัญลักษณ์ของการทำผิด ถ้าขึ้นศาล คนที่ทำผิดก็ไม่ควรชนะคดี ด้วยเหตุนี้ผมจึงอยากช่วย O ให้ชนะ X แล้วก็ โดยปกติแล้ว ตัว minimax algorithm เองก็ทำให้ X เสมอกับ O ซะส่วนใหญ่ ก็ต้องช่วยเหลือกันสักหน่อยแหละฮะ        "
+          description:
+            'Tic Tac Toe has O, not X. For this reason, O should win. อันนี้ดัดแปลงจากเกม tic tac toe ปกติฮะ โค้ดปกติยังมีให้เห็นอยู่เลย ปกติบอทจะใช้ minimax algorithm (ยังบัคอยู๋เลย -3-) แต่คราวนี้เราจะมา Bias เข้าข้าง O สุดฤทธิ์ ตามกติกาปกติแล้ว ฝ่าย O จะเริ่มหลัง X เสมอ ผมรู้สึกสงสาร O ที่ต้องตามหลัง X ทุกครั้ง จึงอยากจะช่วยให้ O ได้ระบายความแค้นบ้าง นอกจากนี้ ตัว X ยังเปรียบเสมือนสัญลักษณ์ของการทำผิด ถ้าขึ้นศาล คนที่ทำผิดก็ไม่ควรชนะคดี ด้วยเหตุนี้ผมจึงอยากช่วย O ให้ชนะ X แล้วก็ โดยปกติแล้ว ตัว minimax algorithm เองก็ทำให้ X เสมอกับ O ซะส่วนใหญ่ ก็ต้องช่วยเหลือกันสักหน่อยแหละฮะ        ',
         },
         {
           team: 'team22',
@@ -460,7 +537,7 @@
           title: 'ใครชนะ?',
           url: 'https://github.com/hashtagSELFIE/kraichana',
           youtube: 'tmfGnJazbEI',
-          description: "แพลตฟอร์มการเช็คอินที่คนไทยอยากใช้"
+          description: 'แพลตฟอร์มการเช็คอินที่คนไทยอยากใช้',
         },
         {
           team: 'team23: เยาวชนคนรักภาษาไทย',
@@ -468,7 +545,8 @@
           title: 'ThaiPlease',
           url: 'https://github.com/pontakornth/thaiplease/',
           youtube: 'EDqijWfDpwc',
-          description: "แปลงไทยคำอังกฤษคำเป็นภาษาไทยล้วน เพื่อคงความเป็นภาษาไทย"
+          description:
+            'แปลงไทยคำอังกฤษคำเป็นภาษาไทยล้วน เพื่อคงความเป็นภาษาไทย',
         },
         {
           team: 'team24',
@@ -476,9 +554,48 @@
           title: 'naka-executioner',
           url: 'https://github.com/opw02693/naka-executioner',
           youtube: 'XScTMF0PtCw',
-          description: "บอท discord ตรวจจับการใช้ คะ-ค่ะ ที่ไม่ถูกต้อง A project made for fun with a total of 2 days experience in both javascript and discord bot creation. Feel free to use the code or give any suggestion."
+          description:
+            'บอท discord ตรวจจับการใช้ คะ-ค่ะ ที่ไม่ถูกต้อง A project made for fun with a total of 2 days experience in both javascript and discord bot creation. Feel free to use the code or give any suggestion.',
         },
       ]
+
+      const awards = [
+        {
+          title: 'uX, design & A E S T H E T I C S',
+          stupid: 'team16',
+          notStupid: 'team03',
+        },
+        {
+          title: 'next big disrupt0r',
+          stupid: 'team14',
+          stupid2: 'team09',
+        },
+        {
+          title: 'blazing fast performance',
+          stupid: 'team17',
+          notStupid: 'team13',
+        },
+        {
+          title: '‘artificial’ intelligence & Io‘T’ies',
+          stupid: 'team06',
+          notStupid: 'team05',
+        },
+      ]
+
+      Vue.component('team-link', {
+        props: ['team'],
+        computed: {
+          url: function () {
+            return `#${this.team}`
+          },
+          text: function () {
+            const team = projects.find((p) => p.team.startsWith(this.team))
+            const title = team.title
+            return `${title}`
+          },
+        },
+        template: `<a :href="url" class="text-yellow-200 hover:text-yellow-300 hover:underline">&rarr; {{text}}</a>`,
+      })
 
       const vm = new Vue({
         el: '#app',
@@ -486,6 +603,7 @@
           style1: { background: mkg() },
           style2: { background: mkg() },
           projects,
+          awards,
         },
         async mounted() {},
         methods: {
